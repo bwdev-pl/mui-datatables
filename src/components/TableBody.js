@@ -6,12 +6,16 @@ import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
+import DragTargetSpot from './DragTargetSpot';
 
 const defaultBodyStyles = {
   root: {},
   emptyTitle: {
     textAlign: 'center',
   },
+  draggableRow: {
+    cursor: 'pointer',
+  }
 };
 
 class TableBody extends React.Component {
@@ -66,6 +70,18 @@ class TableBody extends React.Component {
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
       if (data[rowIndex] !== undefined) rows.push(data[rowIndex]);
+    }
+
+    const { dragAndDrop = null } = this.props.options;
+    if (dragAndDrop && dragAndDrop.enabled) {
+      const rowsWithDragTargetSpots = [{data: [], dragTargetSpot: true, dragTargetSpotIndex: 0}];
+      let dragTargetSpotIndex = 1;
+      rows.forEach((row) => {
+        rowsWithDragTargetSpots.push(row);
+        rowsWithDragTargetSpots.push({data: [], dragTargetSpot: true, dragTargetSpotIndex: dragTargetSpotIndex});
+        ++dragTargetSpotIndex;
+      });
+      rows = rowsWithDragTargetSpots;
     }
 
     return rows.length ? rows : null;
@@ -141,16 +157,31 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
+  static renderDragTargetSpot(classes, data, callback, columnsCount = 100) {
+    return <DragTargetSpot
+        key={'drag_target_spot_' + data.dragTargetSpotIndex}
+        classes={classes} data={data}
+        callback={callback}
+        columnsCount={columnsCount}
+    />;
+  }
+
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
+    const { dragAndDrop = null } = this.props.options;
+    const isDraggableEnabled = dragAndDrop && dragAndDrop.enabled;
 
     return (
       <MuiTableBody>
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;
+
+            if (data.dragTargetSpot) {
+              return this.constructor.renderDragTargetSpot(classes, data, dragAndDrop.callback, columns.length);
+            }
 
             if (options.customRowRender) {
               return options.customRowRender(row, dataIndex, rowIndex);
@@ -163,7 +194,13 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
-                  id={'MUIDataTableBodyRow-' + dataIndex}>
+                  id={'MUIDataTableBodyRow-' + dataIndex}
+                  draggable={isDraggableEnabled}
+                  className={isDraggableEnabled ? classes.draggableRow : null}
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData('rowIndex', rowIndex.toString());
+                  }}
+                >
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
