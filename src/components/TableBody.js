@@ -73,9 +73,6 @@ class TableBody extends React.Component {
     }
 
     const { dragAndDrop = null } = this.props.options;
-
-    console.log('buildRows', dragAndDrop);
-
     if (dragAndDrop && dragAndDrop.enabled) {
       const rowsWithDragTargetSpots = [{data: [], dragTargetSpot: true, dragTargetSpotIndex: 0}];
       let dragTargetSpotIndex = 1;
@@ -181,9 +178,6 @@ class TableBody extends React.Component {
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;
-
-            console.log(data);
-
             if (data.dragTargetSpot) {
               return this.constructor.renderDragTargetSpot(classes, data, dragAndDrop.callback, columns.length);
             }
