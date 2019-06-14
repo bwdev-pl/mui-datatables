@@ -1159,7 +1159,6 @@ class MUIDataTable extends React.Component {
                             activeColumn={activeColumn}
                             data={displayData}
                             count={rowCount}
-                            columns={columns}
                             page={page}
                             rowsPerPage={rowsPerPage}
                             handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}

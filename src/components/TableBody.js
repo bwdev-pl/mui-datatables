@@ -170,7 +170,7 @@ class TableBody extends React.Component {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
-    const { dragAndDrop = null } = this.props.options;
+    const { dragAndDrop = null } = options;
     const isDraggableEnabled = dragAndDrop && dragAndDrop.enabled;
 
     return (
@@ -178,6 +178,8 @@ class TableBody extends React.Component {
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;
+
+            console.log(data);
 
             if (data.dragTargetSpot) {
               return this.constructor.renderDragTargetSpot(classes, data, dragAndDrop.callback, columns.length);
