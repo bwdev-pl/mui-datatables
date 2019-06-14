@@ -73,6 +73,9 @@ class TableBody extends React.Component {
     }
 
     const { dragAndDrop = null } = this.props.options;
+
+    console.log('buildRows', dragAndDrop);
+
     if (dragAndDrop && dragAndDrop.enabled) {
       const rowsWithDragTargetSpots = [{data: [], dragTargetSpot: true, dragTargetSpotIndex: 0}];
       let dragTargetSpotIndex = 1;
