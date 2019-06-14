@@ -1078,10 +1078,6 @@ class MUIDataTable extends React.Component {
         return this.tableContent.current;
     };
 
-    redraw() {
-        this.forceUpdate();
-    }
-
     render() {
         const {classes, className, title} = this.props;
         const {
