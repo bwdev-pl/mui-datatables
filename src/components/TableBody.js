@@ -51,7 +51,10 @@ class TableBody extends React.Component {
   buildRows() {
     const { data, page, rowsPerPage, count } = this.props;
 
-    if (this.props.options.serverSide) return data.length ? data : null;
+    if (this.props.options.serverSide) {
+      rows = this.applyDraggableToRows(data);
+      return rows.length ? rows : null;
+    }
 
     let rows = [];
     const totalPages = Math.floor(count / rowsPerPage);
@@ -72,19 +75,30 @@ class TableBody extends React.Component {
       if (data[rowIndex] !== undefined) rows.push(data[rowIndex]);
     }
 
+   rows = this.applyDraggableToRows(rows);
+
+    return rows.length ? rows : null;
+  }
+
+  applyDraggableToRows(rows) {
     const { dragAndDrop = null } = this.props.options;
+
     if (dragAndDrop && dragAndDrop.enabled) {
-      const rowsWithDragTargetSpots = [{data: [], dragTargetSpot: true, dragTargetSpotIndex: 0}];
+      const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0 }];
       let dragTargetSpotIndex = 1;
-      rows.forEach((row) => {
+      rows.forEach(row => {
         rowsWithDragTargetSpots.push(row);
-        rowsWithDragTargetSpots.push({data: [], dragTargetSpot: true, dragTargetSpotIndex: dragTargetSpotIndex});
+        rowsWithDragTargetSpots.push({
+          data: [],
+          dragTargetSpot: true,
+          dragTargetSpotIndex: dragTargetSpotIndex,
+        });
         ++dragTargetSpotIndex;
       });
       rows = rowsWithDragTargetSpots;
     }
 
-    return rows.length ? rows : null;
+    return rows;
   }
 
   getRowIndex(index) {
