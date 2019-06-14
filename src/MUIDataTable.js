@@ -694,10 +694,12 @@ class MUIDataTable extends React.Component {
         this.setState(
             prevState => {
                 const columns = cloneDeep(prevState.columns);
-                columns[index].display = columns[index].display === 'true' ? 'false' : 'true';
-                return {
-                    columns: columns,
-                };
+                if (columns[index]) {
+                    columns[index].display = columns[index].display === 'true' ? 'false' : 'true';
+                    return {
+                        columns: columns,
+                    };
+                }
             },
             () => {
                 this.setTableAction('columnViewChange');
