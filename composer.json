@@ -1,0 +1,10 @@
+{
+  "name": "bwdev-pl/mui-datatables",
+  "version": "1.0.0",
+  "description": "BW Dev for of mui-datatables repo",
+  "homepage": "https://github.com/bwdev-pl/mui-datatables",
+  "license": "MIT",
+  "authors": [{
+    "name": "BW Dev"
+  }]
+}
