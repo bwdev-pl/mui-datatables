@@ -45,7 +45,7 @@ class DragTargetSpot extends React.Component {
                     if (callback) {
                         const rowIndex = event.dataTransfer.getData('rowIndex');
                         const dataIndex = event.dataTransfer.getData('dataIndex');
-                        const row = tableRows.findIndex(row => row.dataIndex == dataIndex);
+                        const row = tableRows[tableRows.findIndex(row => row.dataIndex == dataIndex)];
                         const prevRowIndex = tableRows.findIndex(row => row.dataIndex == data.dragTargetSpotIndex - 1);
                         let prevRow = null;
                         if (prevRowIndex >= 0) {
