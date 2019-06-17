@@ -42,8 +42,10 @@ class DragTargetSpot extends React.Component {
         return (
             <tr
                 onDrop={(event) => {
-                    const rowIndex = event.dataTransfer.getData('rowIndex');
                     if (callback) {
+                        const rowIndex = event.dataTransfer.getData('rowIndex');
+                        const dataIndex = event.dataTransfer.getData('dataIndex');
+                        const row = tableRows.findIndex(row => row.dataIndex === dataIndex);
                         const prevRowIndex = tableRows.findIndex(row => row.dataIndex === data.dragTargetSpotIndex - 1);
                         let prevRow = null;
                         if (prevRowIndex >= 0) {
@@ -54,7 +56,7 @@ class DragTargetSpot extends React.Component {
                         if (nextRowIndex >= 0) {
                             nextRow = tableRows[nextRowIndex];
                         }
-                        callback(rowIndex, prevRow, nextRow, data.dragTargetSpotIndex);
+                        callback(row, prevRow, nextRow, rowIndex, data.dragTargetSpotIndex);
                     }
                     this.setState({highlightDragOver: false});
                 }}

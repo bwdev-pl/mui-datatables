@@ -215,6 +215,7 @@ class TableBody extends React.Component {
                   className={isDraggableEnabled ? classes.draggableRow : null}
                   onDragStart={(event) => {
                     event.dataTransfer.setData('rowIndex', rowIndex.toString());
+                    event.dataTransfer.setData('dataIndex', dataIndex.toString());
                   }}
                 >
                   <TableSelectCell

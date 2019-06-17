@@ -183,7 +183,7 @@ The component accepts the following props:
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
-|**`dragAndDrop`**|object||Option to enabling drag&drop functionality on datatable. `{enabled: bool, callback: function(rowIndex, prevRow, nextRow, dragTargetSpotIndex)}`
+|**`dragAndDrop`**|object||Option to enabling drag&drop functionality on datatable. `{enabled: bool, callback: function(row, prevRow, nextRow, rowIndex, dragTargetSpotIndex)}`
 
 ## Customize Columns
 
