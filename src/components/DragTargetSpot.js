@@ -4,6 +4,7 @@ import {withStyles} from '@material-ui/core/styles';
 
 const defaultBodyStyles = {
     root: {},
+    draggableRow: {},
     emptyTitle: {
         textAlign: 'center',
     },
@@ -18,7 +19,6 @@ const defaultBodyStyles = {
     highlight: {
         background: '#d3d3d3',
     },
-    draggableRow: {}
 };
 
 class DragTargetSpot extends React.Component {
@@ -33,7 +33,7 @@ class DragTargetSpot extends React.Component {
     };
 
     render() {
-        const {data, classes, callback} = this.props;
+        const {data, classes, callback, tableRows} = this.props;
         const classesToAdd = [classes.dragTargetSpot];
         if (this.state.highlightDragOver) {
             classesToAdd.push(classes.highlight);
@@ -44,7 +44,17 @@ class DragTargetSpot extends React.Component {
                 onDrop={(event) => {
                     const rowIndex = event.dataTransfer.getData('rowIndex');
                     if (callback) {
-                        callback(rowIndex, data.dragTargetSpotIndex);
+                        const prevRowIndex = tableRows.findIndex(row => row.dataIndex === data.dragTargetSpotIndex - 1);
+                        let prevRow = null;
+                        if (prevRowIndex >= 0) {
+                            prevRow = tableRows[prevRowIndex];
+                        }
+                        const nextRowIndex = tableRows.findIndex(row => row.dataIndex === data.dragTargetSpotIndex);
+                        let nextRow = null;
+                        if (nextRowIndex >= 0) {
+                            nextRow = tableRows[nextRowIndex];
+                        }
+                        callback(rowIndex, prevRow, nextRow, data.dragTargetSpotIndex);
                     }
                     this.setState({highlightDragOver: false});
                 }}

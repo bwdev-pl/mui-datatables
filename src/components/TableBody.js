@@ -84,7 +84,7 @@ class TableBody extends React.Component {
     const { dragAndDrop = null } = this.props.options;
 
     if (dragAndDrop && dragAndDrop.enabled) {
-      const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0, beforeRowIndex: '', afterRowIndex: null }];
+      const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0 }];
       let dragTargetSpotIndex = 1;
       rows.forEach(row => {
         rowsWithDragTargetSpots.push(row);
@@ -92,16 +92,9 @@ class TableBody extends React.Component {
           data: [],
           dragTargetSpot: true,
           dragTargetSpotIndex: dragTargetSpotIndex,
-          beforeRowIndex: '',
-          afterRowIndex: row.dataIndex
         });
         ++dragTargetSpotIndex;
       });
-
-      // console.log(rowsWithDragTargetSpots);
-      // rowsWithDragTargetSpots.reduce((prev, current) => {
-      //   console.log('Rows reducer:', current, prev);
-      // });
 
       rows = rowsWithDragTargetSpots;
     }
@@ -179,12 +172,13 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
-  static renderDragTargetSpot(classes, data, callback, columnsCount = 100) {
+  static renderDragTargetSpot(classes, data, callback, tableRows, columnsCount = 100) {
     return <DragTargetSpot
         key={'drag_target_spot_' + data.dragTargetSpotIndex}
         classes={classes}
         data={data}
         callback={callback}
+        tableRows={tableRows}
         columnsCount={columnsCount}
     />;
   }
@@ -202,7 +196,7 @@ class TableBody extends React.Component {
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;
             if (data.dragTargetSpot) {
-              return this.constructor.renderDragTargetSpot(classes, data, dragAndDrop.callback, columns.length);
+              return this.constructor.renderDragTargetSpot(classes, data, dragAndDrop.callback, tableRows, columns.length);
             }
 
             if (options.customRowRender) {
