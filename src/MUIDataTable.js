@@ -217,6 +217,7 @@ class MUIDataTable extends React.Component {
         this.prevProps = prevProps;
 
         if (this.props.data !== prevProps.data || !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns))) {
+            console.log('columns has changed', !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns)));
             this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
                 this.setTableAction('propsUpdate');
             });
