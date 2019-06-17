@@ -183,11 +183,14 @@ class TableBody extends React.Component {
     />;
   }
 
-  static handleDragScroll(event) {
-    if (event.clientY < 100) {
-      window.scrollBy(0, -10);
-    } else if (event.clientY > (window.innerHeight - 100)) {
-      window.scrollBy(0, 10);
+  static handleDragScroll(event, scrollableElementQuery = null) {
+      const scrollableElement = scrollableElementQuery ? document.querySelector(scrollableElementQuery) : window;
+      if (scrollableElement) {
+        if (event.clientY < 100) {
+            scrollableElement.scrollBy(0, -10);
+        } else if (event.clientY > (window.innerHeight - 100)) {
+            scrollableElement.scrollBy(0, 10);
+        }
     }
   }
 
@@ -197,6 +200,7 @@ class TableBody extends React.Component {
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
     const { dragAndDrop = null } = options;
     const isDraggableEnabled = dragAndDrop && dragAndDrop.enabled;
+    const scrollableElementQuery = dragAndDrop && dragAndDrop.scrollableElementQuery ? dragAndDrop.scrollableElementQuery : null;
 
     return (
       <MuiTableBody>
@@ -226,7 +230,7 @@ class TableBody extends React.Component {
                     event.dataTransfer.setData('dataIndex', dataIndex.toString());
                   }}
                   onDrag={(event) => {
-                    this.constructor.handleDragScroll(event);
+                    this.constructor.handleDragScroll(event, scrollableElementQuery);
                   }}
                 >
                   <TableSelectCell
