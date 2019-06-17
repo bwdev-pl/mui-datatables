@@ -183,6 +183,14 @@ class TableBody extends React.Component {
     />;
   }
 
+  static handleDragScroll(event) {
+    if (event.clientY < 100) {
+      window.scrollBy(0, -10);
+    } else if (event.clientY > (window.innerHeight - 100)) {
+      window.scrollBy(0, 10);
+    }
+  }
+
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
@@ -216,6 +224,9 @@ class TableBody extends React.Component {
                   onDragStart={(event) => {
                     event.dataTransfer.setData('rowIndex', rowIndex.toString());
                     event.dataTransfer.setData('dataIndex', dataIndex.toString());
+                  }}
+                  onDrag={(event) => {
+                    this.constructor.handleDragScroll(event);
                   }}
                 >
                   <TableSelectCell
