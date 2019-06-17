@@ -84,7 +84,7 @@ class TableBody extends React.Component {
     const { dragAndDrop = null } = this.props.options;
 
     if (dragAndDrop && dragAndDrop.enabled) {
-      const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0 }];
+      const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0, beforeRowIndex: '', afterRowIndex: null }];
       let dragTargetSpotIndex = 1;
       rows.forEach(row => {
         rowsWithDragTargetSpots.push(row);
@@ -92,9 +92,17 @@ class TableBody extends React.Component {
           data: [],
           dragTargetSpot: true,
           dragTargetSpotIndex: dragTargetSpotIndex,
+          beforeRowIndex: '',
+          afterRowIndex: row.dataIndex
         });
         ++dragTargetSpotIndex;
       });
+
+      // console.log(rowsWithDragTargetSpots);
+      // rowsWithDragTargetSpots.reduce((prev, current) => {
+      //   console.log('Rows reducer:', current, prev);
+      // });
+
       rows = rowsWithDragTargetSpots;
     }
 
@@ -174,7 +182,8 @@ class TableBody extends React.Component {
   static renderDragTargetSpot(classes, data, callback, columnsCount = 100) {
     return <DragTargetSpot
         key={'drag_target_spot_' + data.dragTargetSpotIndex}
-        classes={classes} data={data}
+        classes={classes}
+        data={data}
         callback={callback}
         columnsCount={columnsCount}
     />;
