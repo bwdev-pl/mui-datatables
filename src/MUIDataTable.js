@@ -216,12 +216,12 @@ class MUIDataTable extends React.Component {
     componentDidUpdate(prevProps) {
         this.prevProps = prevProps;
 
-        if (this.props.data !== prevProps.data || !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns))) {
-            console.log('columns has changed', !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns)));
+        // if (this.props.data !== prevProps.data || !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns))) {
+        //     console.log('columns has changed', !isEqual(this.rawColumns(this.props.columns), this.rawColumns(prevProps.columns)));
             this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
                 this.setTableAction('propsUpdate');
             });
-        }
+        // }
 
         if (this.props.options.searchText !== prevProps.options.searchText) {
             // When we have a search, we must reset page to view it
@@ -357,10 +357,10 @@ class MUIDataTable extends React.Component {
         let filterData = [];
         let filterList = [];
 
-        if (this.state.columns.length && this.prevProps && isEqual(this.rawColumns(newColumns), this.rawColumns(this.prevProps.columns))) {
-            const {columns, filterList, filterData} = this.state;
-            return {columns, filterList, filterData};
-        }
+        // if (this.state.columns.length && this.prevProps && isEqual(this.rawColumns(newColumns), this.rawColumns(this.prevProps.columns))) {
+        //     const {columns, filterList, filterData} = this.state;
+        //     return {columns, filterList, filterData};
+        // }
 
         newColumns.forEach((column, colIndex) => {
             let columnOptions = {
