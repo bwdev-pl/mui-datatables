@@ -188,9 +188,6 @@ class MUIDataTable extends React.Component {
         searchText: null,
     };
 
-    /** Only available when inside componentDidUpdate() */
-    prevProps = null;
-
     constructor() {
         super();
         this.tableRef = false;
@@ -214,8 +211,6 @@ class MUIDataTable extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        this.prevProps = prevProps;
-
         if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
             this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
                 this.setTableAction('propsUpdate');
@@ -231,8 +226,6 @@ class MUIDataTable extends React.Component {
             this.setHeadResizeable(this.headCellRefs, this.tableRef);
             this.updateDividers();
         }
-
-        this.prevProps = null;
     }
 
     initializeTable(props) {
@@ -355,6 +348,11 @@ class MUIDataTable extends React.Component {
         let columnData = [];
         let filterData = [];
         let filterList = [];
+
+        if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))) {
+            const {columns, filterList, filterData} = this.state;
+            return {columns, filterList, filterData};
+        }
 
         newColumns.forEach((column, colIndex) => {
             let columnOptions = {
