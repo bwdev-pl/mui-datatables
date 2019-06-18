@@ -217,9 +217,6 @@ class MUIDataTable extends React.Component {
         this.prevProps = prevProps;
 
         if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-            if (this.props.columns !== prevProps.columns) {
-                console.log('columns has changed');
-            }
             this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
                 this.setTableAction('propsUpdate');
             });
@@ -360,11 +357,9 @@ class MUIDataTable extends React.Component {
         let filterList = [];
 
         if (this.state.columns.length && this.prevProps && isEqual(this.rawColumns(newColumns), this.rawColumns(this.prevProps.columns))) {
-            console.log('building new columns from state');
             const {columns, filterList, filterData} = this.state;
             return {columns, filterList, filterData};
         }
-        console.log('building new columns from scratch');
 
         newColumns.forEach((column, colIndex) => {
             let columnOptions = {
