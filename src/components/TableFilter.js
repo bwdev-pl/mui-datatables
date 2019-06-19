@@ -151,7 +151,7 @@ class TableFilter extends React.Component {
             </Typography>
           </Grid>
           <Grid container>
-            {filterData[index].map((filterValue, filterIndex) => (
+            {filterData[index].map((filterOption, filterIndex) => (
               <Grid item key={filterIndex}>
                 <FormControlLabel
                   key={filterIndex}
@@ -162,16 +162,16 @@ class TableFilter extends React.Component {
                   control={
                     <Checkbox
                       className={classes.checkboxIcon}
-                      onChange={this.handleCheckboxChange.bind(null, index, filterValue, column.name)}
-                      checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
+                      onChange={this.handleCheckboxChange.bind(null, index, filterOption.value, column.name)}
+                      checked={filterList[index].indexOf(filterOption.value) >= 0}
                       classes={{
                         root: classes.checkbox,
                         checked: classes.checked,
                       }}
-                      value={filterValue != null ? filterValue.toString() : ''}
+                      value={filterOption.value != null ? filterOption.value.toString() : ''}
                     />
                   }
-                  label={filterValue}
+                  label={filterOption.label}
                 />
               </Grid>
             ))}
@@ -198,9 +198,9 @@ class TableFilter extends React.Component {
               <MenuItem value={textLabels.all} key={0}>
                 {textLabels.all}
               </MenuItem>
-              {filterData[index].map((filterValue, filterIndex) => (
-                <MenuItem value={filterValue} key={filterIndex + 1}>
-                  {filterValue != null ? filterValue.toString() : ''}
+              {filterData[index].map((filterOption, filterIndex) => (
+                <MenuItem value={filterOption.value} key={filterIndex + 1}>
+                  {filterOption.value != null ? filterOption.label.toString() : ''}
                 </MenuItem>
               ))}
             </Select>
@@ -243,18 +243,18 @@ class TableFilter extends React.Component {
               name={column.name}
               onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
               input={<Input name={column.name} id={column.name} />}>
-              {filterData[index].map((filterValue, filterIndex) => (
-                <MenuItem value={filterValue} key={filterIndex + 1}>
+              {filterData[index].map((filterOption, filterIndex) => (
+                <MenuItem value={filterOption.value} key={filterIndex + 1}>
                   <Checkbox
-                    checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
-                    value={filterValue != null ? filterValue.toString() : ''}
+                    checked={filterList[index].indexOf(filterOption.value) >= 0}
+                    value={filterOption != null ? filterOption.value.toString() : ''}
                     className={classes.checkboxIcon}
                     classes={{
                       root: classes.checkbox,
                       checked: classes.checked,
                     }}
                   />
-                  <ListItemText primary={filterValue} />
+                  <ListItemText primary={filterOption.label} />
                 </MenuItem>
               ))}
             </Select>

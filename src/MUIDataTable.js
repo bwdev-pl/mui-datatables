@@ -15,6 +15,7 @@ import merge from 'lodash.merge';
 import isEqual from 'lodash.isequal';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
+import isObject from 'lodash.isobject';
 import textLabels from './textLabels';
 import {withStyles} from '@material-ui/core/styles';
 import {buildMap, getCollatorComparator, sortCompare} from './utils';
@@ -122,9 +123,25 @@ class MUIDataTable extends React.Component {
                         viewColumns: PropTypes.bool,
                         filterList: PropTypes.array,
                         filterOptions: PropTypes.oneOfType([
-                            PropTypes.array,
+                            PropTypes.arrayOf(
+                                PropTypes.oneOfType([
+                                    PropTypes.string,
+                                    PropTypes.shape({
+                                        value: PropTypes.string,
+                                        label: PropTypes.string,
+                                    }),
+                                ])
+                            ),
                             PropTypes.shape({
-                                names: PropTypes.array,
+                                names: PropTypes.arrayOf(
+                                    PropTypes.oneOfType([
+                                        PropTypes.string,
+                                        PropTypes.shape({
+                                            value: PropTypes.string,
+                                            label: PropTypes.string,
+                                        }),
+                                    ])
+                                ),
                                 logic: PropTypes.func,
                             }),
                         ]),
@@ -475,12 +492,12 @@ class MUIDataTable extends React.Component {
                     }
                 }
 
-                if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
-                    filterData[colIndex].push(value);
+                if (!Array.isArray(value) && filterData[colIndex].findIndex(option => option.value === value) < 0) {
+                    filterData[colIndex].push(this.createFilterOption(value));
                 } else if (Array.isArray(value)) {
                     value.forEach(element => {
-                        if (filterData[colIndex].indexOf(element) < 0) {
-                            filterData[colIndex].push(element);
+                        if (filterData[colIndex].findIndex(option => option.value === element) < 0) {
+                            filterData[colIndex].push(this.createFilterOption(element));
                         }
                     });
                 }
@@ -488,12 +505,14 @@ class MUIDataTable extends React.Component {
 
             if (column.filterOptions) {
                 if (Array.isArray(column.filterOptions)) {
-                    filterData[colIndex] = cloneDeep(column.filterOptions);
+                    filterData[colIndex] = cloneDeep(column.filterOptions)
+                        .map(option => this.createFilterOption(option));
                     console.error(
                         'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
                     );
                 } else if (Array.isArray(column.filterOptions.names)) {
-                    filterData[colIndex] = cloneDeep(column.filterOptions.names);
+                    filterData[colIndex] = cloneDeep(column.filterOptions.names)
+                        .map(option => this.createFilterOption(option));
                 }
             }
 
@@ -503,7 +522,7 @@ class MUIDataTable extends React.Component {
 
             if (this.options.sortFilterList) {
                 const comparator = getCollatorComparator();
-                filterData[colIndex].sort(comparator);
+                filterData[colIndex].sort((a, b) => comparator(a.label, b.label));
             }
 
             if (column.sortDirection !== null) {
@@ -679,14 +698,14 @@ class MUIDataTable extends React.Component {
                     ? funcResult.props.value
                     : prevState['data'][row][index];
 
-            const prevFilterIndex = filterData[index].indexOf(filterValue);
-            filterData[index].splice(prevFilterIndex, 1, filterValue);
+            const prevFilterIndex = filterData[index].findIndex(option => option.value === filterValue);
+            filterData[index].splice(prevFilterIndex, 1, this.createFilterOption(filterValue));
 
             changedData[row].data[index] = value;
 
             if (this.options.sortFilterList) {
                 const comparator = getCollatorComparator();
-                filterData[index].sort(comparator);
+                filterData[index].sort((a, b) => comparator(a.label, b.label));
             }
 
             return {
@@ -914,6 +933,10 @@ class MUIDataTable extends React.Component {
             },
         );
     };
+
+    createFilterOption(value) {
+        return isObject(value) ? value : {value: value, label: value};
+    }
 
     selectRowDelete = () => {
         const {selectedRows, data, filterList} = this.state;
