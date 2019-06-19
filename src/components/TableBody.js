@@ -83,7 +83,7 @@ class TableBody extends React.Component {
   applyDraggableToRows(rows) {
     const { dragAndDrop = null } = this.props.options;
 
-    if (dragAndDrop && dragAndDrop.enabled) {
+    if (dragAndDrop && dragAndDrop.enabled && rows.length > 0) {
       const rowsWithDragTargetSpots = [{ data: [], dragTargetSpot: true, dragTargetSpotIndex: 0 }];
       let dragTargetSpotIndex = 1;
       rows.forEach(row => {
