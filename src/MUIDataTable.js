@@ -45,12 +45,42 @@ const defaultTableStyles = {
         position: 'absolute',
         width: '1px',
     },
+    tableLoading: {
+        position: 'relative',
+        borderRadius: '5px',
+
+        "&::after": {
+            content: '" "',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            opacity: '0.3',
+            background: 'repeating-linear-gradient(45deg, rgb(10, 10, 10),rgb(10, 10, 10) 10px, rgb(100, 100, 100) 10px, rgb(100, 100, 100) 20px)',
+            zIndex: 1000,
+            touchEvent: 'all',
+            backgroundPosition: '0 0',
+            backgroundSize: '113px 100%',
+            backgroundRepeat: 'repeat-x',
+            borderRadius: '5px',
+            animation: 'animatedBackground 5s linear infinite',
+        }
+    },
     '@global': {
         '@media print': {
             '.datatables-noprint': {
                 display: 'none',
             },
         },
+        '@keyframes animatedBackground': {
+            from: {
+                backgroundPosition: '0 0'
+            },
+            to: {
+                backgroundPosition: '-113px 0'
+            }
+        }
     }
 };
 
@@ -1082,7 +1112,7 @@ class MUIDataTable extends React.Component {
     };
 
     render() {
-        const {classes, className, title} = this.props;
+        const {classes, className, title, loading} = this.props;
         const {
             announceText,
             activeColumn,
@@ -1097,17 +1127,17 @@ class MUIDataTable extends React.Component {
             searchText,
         } = this.state;
 
-    const rowCount = this.state.count || displayData.length;
-    const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
-    const showToolbar = hasToolbarItem(this.options, title);
-    const columnNames = columns.map(column => ({ name: column.name }));
-    this.getDefaultOptions(this.props);
+        const rowCount = this.state.count || displayData.length;
+        const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
+        const showToolbar = hasToolbarItem(this.options, title);
+        const columnNames = columns.map(column => ({name: column.name}));
+        this.getDefaultOptions(this.props);
 
         return (
             <Paper
                 elevation={this.options.elevation}
                 ref={this.tableContent}
-                className={classnames(classes.paper, className)}>
+                className={classnames(classes.paper, className, loading ? classes.tableLoading : '')}>
                 {selectedRows.data.length ? (
                     <TableToolbarSelect
                         options={this.options}

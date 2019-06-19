@@ -5,7 +5,8 @@ import Chip from '@material-ui/core/Chip';
 
 class Example extends React.Component {
     state = {
-        dragEnabled: true
+        dragEnabled: true,
+        loading: false,
     };
 
     table = React.createRef();
@@ -114,10 +115,13 @@ class Example extends React.Component {
 
         return (
             <Fragment>
-                <MUIDataTable innerRef={this.table} title={"ACME Employee list"} data={data} columns={columns} options={options}/>
+                <MUIDataTable innerRef={this.table} title={"ACME Employee list"} data={data} columns={columns} options={options} loading={this.state.loading}/>
                 <button onClick={() => {
                     this.setState({dragEnabled: !this.state.dragEnabled});
                 }}>{this.state.dragEnabled ? 'Draggable' : 'Undraggable'}</button>
+                <button onClick={() => {
+                    this.setState({loading: !this.state.loading});
+                }}>{this.state.loading ? 'Loading' : 'Not-Loading'}</button>
             </Fragment>
         );
 
