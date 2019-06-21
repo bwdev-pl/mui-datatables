@@ -1199,6 +1199,7 @@ class MUIDataTable extends React.Component {
                         return c.customFilterListRender ? c.customFilterListRender : f => f;
                     })}
                     filterList={filterList}
+                    filterData={filterData}
                     filterUpdate={this.filterUpdate}
                     columnNames={columnNames}
                 />
