@@ -145,10 +145,11 @@ class MUIDataTable extends React.Component {
                                 logic: PropTypes.func,
                             }),
                         ]),
-                        filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
+                        filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
                         customHeadRender: PropTypes.func,
                         customBodyRender: PropTypes.func,
                         customFilterListRender: PropTypes.func,
+                        customFilterRender: PropTypes.func,
                     }),
                 }),
             ]),
@@ -156,7 +157,7 @@ class MUIDataTable extends React.Component {
         /** Options used to describe table */
         options: PropTypes.shape({
             responsive: PropTypes.oneOf(['stacked', 'scroll']),
-            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
+            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             textLabels: PropTypes.object,
             pagination: PropTypes.bool,
             expandableRows: PropTypes.bool,

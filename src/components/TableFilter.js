@@ -139,6 +139,10 @@ class TableFilter extends React.Component {
     this.props.onFilterUpdate(index, event.target.value, column, 'textField');
   };
 
+  handleCustomFieldChange = (value, index, column) => {
+    this.props.onFilterUpdate(index, value, column, 'custom');
+  };
+
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
 
@@ -264,6 +268,24 @@ class TableFilter extends React.Component {
     );
   }
 
+  renderCustom(column, index) {
+    const { classes } = this.props;
+
+    if (column.customFilterRender === undefined) {
+      throw Error('customFilterRender must be provided when using filterType=custom column option');
+    }
+
+    return (
+      <GridListTile key={index} cols={1}>
+        <div className={classes.textFieldRoot}>
+          <FormControl className={classes.textFieldFormControl} key={index}>
+            {column.customFilterRender((value) => this.handleCustomFieldChange(value, index, column.name))}
+          </FormControl>
+        </div>
+      </GridListTile>
+    );
+  }
+
   render() {
     const { classes, columns, options, onFilterReset } = this.props;
     const textLabels = options.textLabels.filter;
@@ -301,7 +323,9 @@ class TableFilter extends React.Component {
                 ? this.renderMultiselect(column, index)
                 : filterType === 'textField'
                 ? this.renderTextField(column, index)
-                : this.renderSelect(column, index);
+                : filterType === 'dropdown'
+                ? this.renderSelect(column, index)
+                : this.renderCustom(column, index);
             }
           })}
         </GridList>
