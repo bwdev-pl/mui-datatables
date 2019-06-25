@@ -1019,7 +1019,12 @@ class MUIDataTable extends React.Component {
                         return arr;
                     }, []);
 
-                    let newRows = [...prevState.selectedRows, ...selectedRows];
+                    let newRows = [];
+                    if (Array.isArray(prevState.selectedRows)) {
+                        newRows = [...prevState.selectedRows, ...selectedRows];
+                    } else if (Array.isArray(prevState.selectedRows.data)) {
+                        newRows = [...prevState.selectedRows.data, ...selectedRows];
+                    }
                     let selectedMap = buildMap(newRows);
 
                     if (isDeselect) {
