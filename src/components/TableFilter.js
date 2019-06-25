@@ -139,7 +139,11 @@ class TableFilter extends React.Component {
     this.props.onFilterUpdate(index, event.target.value, column, 'textField');
   };
 
-  handleCustomFieldChange = (value, index, column) => {
+  handleCustomFieldChange = (value, label, index, column) => {
+    const {filterData} = this.props;
+
+    label = label || value;
+    filterData[index][0] = {value: value, label: label};
     this.props.onFilterUpdate(index, value, column, 'custom');
   };
 
@@ -269,17 +273,21 @@ class TableFilter extends React.Component {
   }
 
   renderCustom(column, index) {
-    const { classes } = this.props;
-
     if (column.customFilterRender === undefined) {
       throw Error('customFilterRender must be provided when using filterType=custom column option');
     }
+
+    const { classes, filterList, filterData } = this.props;
 
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.textFieldRoot}>
           <FormControl className={classes.textFieldFormControl} key={index}>
-            {column.customFilterRender((value) => this.handleCustomFieldChange(value, index, column.name))}
+            {column.customFilterRender(
+                column,
+                filterList[index].toString() ? filterData[index].find(option => option.value === filterList[index].toString()): null,
+                (value, label) => this.handleCustomFieldChange(value, label, index, column.name)
+            )}
           </FormControl>
         </div>
       </GridListTile>

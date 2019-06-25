@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/drag-and-drop/index.js"
+    app: "./examples/custom-filter-render/index.js"
   },
   stats: "verbose",
   context: __dirname,

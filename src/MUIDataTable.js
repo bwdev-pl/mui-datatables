@@ -493,18 +493,20 @@ class MUIDataTable extends React.Component {
                     }
                 }
 
-                if (!Array.isArray(value) && filterData[colIndex].findIndex(option => option.value === value) < 0) {
-                    filterData[colIndex].push(this.createFilterOption(value));
-                } else if (Array.isArray(value)) {
-                    value.forEach(element => {
-                        if (filterData[colIndex].findIndex(option => option.value === element) < 0) {
-                            filterData[colIndex].push(this.createFilterOption(element));
-                        }
-                    });
+                if (column.filterType !== 'custom') {
+                    if (!Array.isArray(value) && filterData[colIndex].findIndex(option => option.value === value) < 0) {
+                        filterData[colIndex].push(this.createFilterOption(value));
+                    } else if (Array.isArray(value)) {
+                        value.forEach(element => {
+                            if (filterData[colIndex].findIndex(option => option.value === element) < 0) {
+                                filterData[colIndex].push(this.createFilterOption(element));
+                            }
+                        });
+                    }
                 }
             }
 
-            if (column.filterOptions) {
+            if (column.filterType !== 'custom' && column.filterOptions) {
                 if (Array.isArray(column.filterOptions)) {
                     filterData[colIndex] = cloneDeep(column.filterOptions)
                         .map(option => this.createFilterOption(option));
