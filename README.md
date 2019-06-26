@@ -219,6 +219,7 @@ const columns = [
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filterOptions`**|{names, logic}||With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js) and/or custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js). `names` must be an array of strings or array of objects, each of shape `{value, label}`
 |**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`customFilterRender`**|function||Function that returns any renderable element, that represents filter field. [Example](https://github.com/bwdev-pl/mui-datatables/blob/master/examples/custom-filter-render/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
