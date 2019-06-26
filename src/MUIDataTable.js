@@ -543,12 +543,14 @@ class MUIDataTable extends React.Component {
             if (options.rowsSelected && options.rowsSelected.length) {
                 options.rowsSelected.forEach(row => {
                     let rowPos = row;
-
                     for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
                         if (this.state.displayData[cIndex].dataIndex === row) {
                             rowPos = cIndex;
                             break;
                         }
+                    }
+                    if (this.props.options.dragAndDrop && this.props.options.dragAndDrop.enabled) {
+                        rowPos = (2 * rowPos) + 1;
                     }
 
                     selectedRowsData.data.push({index: rowPos, dataIndex: row});
