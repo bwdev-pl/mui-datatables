@@ -184,14 +184,23 @@ class TableBody extends React.Component {
   }
 
   static handleDragScroll(event, scrollableElementQuery = null) {
+      if (this.dragScrollInterval) {
+          clearInterval(this.dragScrollInterval);
+      }
       const scrollableElement = scrollableElementQuery ? document.querySelector(scrollableElementQuery) : window;
       if (scrollableElement) {
-        if (event.clientY < 100) {
-            scrollableElement.scrollBy(0, -10);
-        } else if (event.clientY > (window.innerHeight - 100)) {
-            scrollableElement.scrollBy(0, 10);
-        }
-    }
+          if (event.clientY > 0) {
+              if (event.clientY < 300) {
+                  this.dragScrollInterval = setInterval(() => {
+                      scrollableElement.scrollBy(0, -10);
+                  }, 10);
+              } else if (event.clientY > (window.innerHeight - 300)) {
+                  this.dragScrollInterval = setInterval(() => {
+                      scrollableElement.scrollBy(0, 10);
+                  }, 10);
+              }
+          }
+      }
   }
 
   render() {
@@ -229,7 +238,7 @@ class TableBody extends React.Component {
                     event.dataTransfer.setData('rowIndex', rowIndex.toString());
                     event.dataTransfer.setData('dataIndex', dataIndex.toString());
                   }}
-                  onDrag={(event) => {
+                  onDragOver={(event) => {
                     this.constructor.handleDragScroll(event, scrollableElementQuery);
                   }}
                 >
