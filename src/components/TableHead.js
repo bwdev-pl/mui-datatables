@@ -30,11 +30,11 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, page, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, rowsPerPage, options, data, page, setCellRef, selectedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
-    const isDeterminate = numSelected > 0 && numSelected < count;
-    const isChecked = numSelected === count ? true : false;
+    const isDeterminate = numSelected > 0 && numSelected < count && numSelected < rowsPerPage;
+    const isChecked = (numSelected === count || numSelected === rowsPerPage);
 
     return (
       <MuiTableHead
