@@ -1019,7 +1019,11 @@ class MUIDataTable extends React.Component {
 
                     let selectedRows = displayData.reduce((arr, d, i) => {
                         const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
-                        selected && arr.push({index: i, dataIndex: displayData[i].dataIndex});
+                        let index = i;
+                        if (this.props.options.dragAndDrop && this.props.options.dragAndDrop.enabled) {
+                            index = 2 * i + 1;
+                        }
+                        selected && arr.push({index: index, dataIndex: displayData[i].dataIndex});
                         return arr;
                     }, []);
 
