@@ -519,7 +519,7 @@ class MUIDataTable extends React.Component {
                 }
             }
 
-            if (column.filterList && this.prevProps && this.props.columns !== this.prevProps.columns) {
+            if (column.filterList && (!this.prevProps || this.prevProps && this.props.columns !== this.prevProps.columns)) {
                 filterList[colIndex] = cloneDeep(column.filterList);
             }
 
