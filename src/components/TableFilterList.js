@@ -41,7 +41,7 @@ class TableFilterList extends React.Component {
         {filterList.map((item, index) =>
           item.map((data, colIndex) => (
             <Chip
-                label={filterListRenderers[index](filterData[index].find(option => option.value === data).label)}
+                label={filterListRenderers[index](filterData[index] && filterData[index].find(option => option.value === data).label)}
               key={colIndex}
               onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
               className={classes.chip}
