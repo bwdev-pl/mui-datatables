@@ -39,14 +39,17 @@ class TableFilterList extends React.Component {
     return (
       <div className={classes.root}>
         {filterList.map((item, index) =>
-          item.map((data, colIndex) => (
-            <Chip
-                label={filterListRenderers[index](filterData[index] && filterData[index].find(option => option.value === data).label)}
-              key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
-              className={classes.chip}
-            />
-          )),
+          item.map((data, colIndex) => {
+            let filterOption = filterData[index] && filterData[index].find(option => option.value === data);
+            return (
+                <Chip
+                    label={filterListRenderers[index](filterOption && filterOption.label)}
+                    key={colIndex}
+                    onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
+                    className={classes.chip}
+                />
+            );
+          }),
         )}
       </div>
     );
