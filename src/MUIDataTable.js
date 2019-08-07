@@ -506,14 +506,14 @@ class MUIDataTable extends React.Component {
                 }
             }
 
-            if (column.filterOptions) {
+            if (column.filterOptions && (!filterData[colIndex] || filterData[colIndex].length === 0)) {
                 if (Array.isArray(column.filterOptions)) {
                     filterData[colIndex] = cloneDeep(column.filterOptions)
                         .map(option => this.createFilterOption(option));
                     console.error(
                         'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
                     );
-                } else if (Array.isArray(column.filterOptions.names)) {
+                } else if (column.filterOptions && Array.isArray(column.filterOptions.names)) {
                     filterData[colIndex] = cloneDeep(column.filterOptions.names)
                         .map(option => this.createFilterOption(option));
                 }
