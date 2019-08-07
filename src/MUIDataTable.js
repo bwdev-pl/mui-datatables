@@ -493,7 +493,7 @@ class MUIDataTable extends React.Component {
                     }
                 }
 
-                if (column.filterType !== 'custom') {
+                if (!options.serverSide && !column.filterOptions) {
                     if (!Array.isArray(value) && filterData[colIndex].findIndex(option => option.value === value) < 0) {
                         filterData[colIndex].push(this.createFilterOption(value));
                     } else if (Array.isArray(value)) {
@@ -506,7 +506,7 @@ class MUIDataTable extends React.Component {
                 }
             }
 
-            if (column.filterType !== 'custom' && column.filterOptions) {
+            if (column.filterOptions) {
                 if (Array.isArray(column.filterOptions)) {
                     filterData[colIndex] = cloneDeep(column.filterOptions)
                         .map(option => this.createFilterOption(option));
