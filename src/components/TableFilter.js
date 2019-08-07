@@ -143,7 +143,7 @@ class TableFilter extends React.Component {
     const {filterData} = this.props;
 
     label = label || value;
-    filterData[index][0] = {value: value, label: label};
+    filterData[index] = [{ value: value, label: label }];
     this.props.onFilterUpdate(index, value, column, 'custom');
   };
 
